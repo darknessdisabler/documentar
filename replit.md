@@ -104,6 +104,9 @@ The application uses a modular content system where each module represents a dif
 - June 28, 2025: Added "Add New Module" functionality with type selection
 - June 28, 2025: Enhanced tutorial overlay with close button
 - June 28, 2025: Improved drag-and-drop interface with epic falling animations
+- June 28, 2025: Created comprehensive ModuleEditModal with text editing for all module types
+- June 28, 2025: Added AI model management system with automatic first-run setup
+- June 28, 2025: Implemented FirstRunSetup component for automatic base model downloading
 
 ## User Preferences
 

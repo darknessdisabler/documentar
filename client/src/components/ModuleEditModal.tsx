@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { X, Save } from 'lucide-react';
+import { X, Save, Plus } from 'lucide-react';
 import { Module } from '@/lib/types';
 import { useTheme } from '@/hooks/useTheme';
 import { t } from '@/lib/translations';
@@ -22,9 +22,9 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
   const [editedModule, setEditedModule] = useState<Module | null>(module);
 
   // Update edited module when prop changes
-  useState(() => {
+  useEffect(() => {
     setEditedModule(module);
-  });
+  }, [module]);
 
   if (!module || !editedModule) return null;
 
@@ -55,6 +55,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 value={editedModule.content.title || ''}
                 onChange={(e) => updateContent('title', e.target.value)}
                 placeholder={language === 'uk' ? 'Введіть заголовок...' : 'Enter title...'}
+                className="mt-2"
               />
             </div>
             <div>
@@ -64,6 +65,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 value={editedModule.content.subtitle || ''}
                 onChange={(e) => updateContent('subtitle', e.target.value)}
                 placeholder={language === 'uk' ? 'Введіть підзаголовок...' : 'Enter subtitle...'}
+                className="mt-2"
               />
             </div>
           </div>
@@ -79,6 +81,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
               onChange={(e) => updateContent('text', e.target.value)}
               placeholder={language === 'uk' ? 'Введіть текст...' : 'Enter text...'}
               rows={6}
+              className="mt-2"
             />
           </div>
         );
@@ -93,6 +96,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 value={editedModule.content.url || ''}
                 onChange={(e) => updateContent('url', e.target.value)}
                 placeholder="https://example.com/image.jpg"
+                className="mt-2"
               />
             </div>
             <div>
@@ -102,6 +106,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 value={editedModule.content.alt || ''}
                 onChange={(e) => updateContent('alt', e.target.value)}
                 placeholder={language === 'uk' ? 'Опис зображення...' : 'Image description...'}
+                className="mt-2"
               />
             </div>
           </div>
@@ -142,7 +147,9 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                   const newItems = [...(editedModule.content.items || []), ''];
                   updateContent('items', newItems);
                 }}
+                className="w-full"
               >
+                <Plus className="w-4 h-4 mr-2" />
                 {language === 'uk' ? 'Додати пункт' : 'Add item'}
               </Button>
             </div>
@@ -160,6 +167,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 onChange={(e) => updateContent('text', e.target.value)}
                 placeholder={language === 'uk' ? 'Введіть цитату...' : 'Enter quote...'}
                 rows={3}
+                className="mt-2"
               />
             </div>
             <div>
@@ -169,6 +177,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                 value={editedModule.content.author || ''}
                 onChange={(e) => updateContent('author', e.target.value)}
                 placeholder={language === 'uk' ? 'Ім\'я автора...' : 'Author name...'}
+                className="mt-2"
               />
             </div>
           </div>
@@ -199,7 +208,7 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                       newData[index] = { ...newData[index], value: parseInt(e.target.value) || 0 };
                       updateContent('data', newData);
                     }}
-                    placeholder="0"
+                    placeholder="0-100"
                     className="w-20"
                   />
                   <Button
@@ -221,7 +230,9 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
                   const newData = [...(editedModule.content.data || []), { label: '', value: 0 }];
                   updateContent('data', newData);
                 }}
+                className="w-full"
               >
+                <Plus className="w-4 h-4 mr-2" />
                 {language === 'uk' ? 'Додати дані' : 'Add data'}
               </Button>
             </div>
@@ -234,51 +245,37 @@ export default function ModuleEditModal({ module, isOpen, onClose, onSave }: Mod
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <Dialog open={isOpen} onOpenChange={onClose}>
-          <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
-            <DialogHeader>
-              <DialogTitle className="flex items-center justify-between">
-                <span>
-                  {language === 'uk' ? 'Редагувати' : 'Edit'} {t(editedModule.type, language)}
-                </span>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={onClose}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  <X className="w-4 h-4" />
-                </Button>
-              </DialogTitle>
-            </DialogHeader>
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="flex items-center justify-between">
+            <span>{language === 'uk' ? 'Редагувати модуль' : 'Edit Module'}</span>
+            <div className="flex gap-2">
+              <Button onClick={handleSave} size="sm">
+                <Save className="w-4 h-4 mr-2" />
+                {language === 'uk' ? 'Зберегти' : 'Save'}
+              </Button>
+              <Button onClick={onClose} variant="outline" size="sm">
+                <X className="w-4 h-4" />
+              </Button>
+            </div>
+          </DialogTitle>
+        </DialogHeader>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
-              className="space-y-6"
-            >
-              {renderEditFields()}
-
-              <div className="flex justify-end space-x-3 pt-4 border-t">
-                <Button variant="outline" onClick={onClose}>
-                  {language === 'uk' ? 'Скасувати' : 'Cancel'}
-                </Button>
-                <Button
-                  onClick={handleSave}
-                  className="bg-primary-500 hover:bg-primary-600 text-white"
-                  style={{ backgroundColor: 'var(--theme-primary, #2563EB)' }}
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  {t('save', language)}
-                </Button>
-              </div>
-            </motion.div>
-          </DialogContent>
-        </Dialog>
-      )}
-    </AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="space-y-6"
+        >
+          <div className="bg-gray-50 rounded-lg p-4">
+            <h3 className="font-medium mb-4">
+              {language === 'uk' ? 'Тип модуля:' : 'Module Type:'} {t(editedModule.type, language)}
+            </h3>
+            {renderEditFields()}
+          </div>
+        </motion.div>
+      </DialogContent>
+    </Dialog>
   );
 }

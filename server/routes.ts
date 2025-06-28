@@ -2,6 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { generatePresentation, generateDocument, improveText } from "./services/ai";
+import { modelManager, type ModelDownloadProgress } from "./services/models";
 import { insertProjectSchema, insertUserSettingsSchema } from "@shared/schema";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -164,6 +165,81 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(settings);
     } catch (error) {
       res.status(500).json({ message: error.message });
+    }
+  });
+
+  // AI Models Routes
+  app.get("/api/models", async (req, res) => {
+    try {
+      const models = await modelManager.getAllModels();
+      res.json(models);
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/models/:id/download", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const model = await modelManager.getModel(id);
+      
+      if (!model) {
+        return res.status(404).json({ message: "Model not found" });
+      }
+
+      if (model.downloaded) {
+        return res.json({ message: "Model already downloaded" });
+      }
+
+      if (model.downloading) {
+        return res.status(409).json({ message: "Model is already downloading" });
+      }
+
+      // Start download in background
+      modelManager.downloadModel(id).catch(error => {
+        console.error(`Failed to download model ${id}:`, error);
+      });
+
+      res.json({ message: "Download started" });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.delete("/api/models/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const success = await modelManager.deleteModel(id);
+      
+      if (success) {
+        res.json({ message: "Model deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Model not found or not downloaded" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.get("/api/models/first-run", async (req, res) => {
+    try {
+      const isFirstRun = await modelManager.checkFirstRun();
+      res.json({ isFirstRun });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
+    }
+  });
+
+  app.post("/api/models/download-essential", async (req, res) => {
+    try {
+      // Start essential models download in background
+      modelManager.downloadEssentialModels().catch(error => {
+        console.error("Failed to download essential models:", error);
+      });
+
+      res.json({ message: "Essential models download started" });
+    } catch (error) {
+      res.status(500).json({ message: (error as Error).message });
     }
   });
 

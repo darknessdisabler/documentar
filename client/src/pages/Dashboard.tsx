@@ -13,6 +13,7 @@ import WindowTitleBar from '@/components/WindowTitleBar';
 import Sidebar from '@/components/Sidebar';
 import ModulesGrid from '@/components/ModulesGrid';
 import LoadingScreen from '@/components/LoadingScreen';
+import FirstRunSetup from '@/components/FirstRunSetup';
 import TutorialOverlay from '@/components/TutorialOverlay';
 
 const defaultModules: Module[] = [
@@ -74,6 +75,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [showTutorial, setShowTutorial] = useState(false);
   const [currentProject, setCurrentProject] = useState<any>(null);
+  const [firstRunComplete, setFirstRunComplete] = useState(false);
   
   const { language } = useTheme();
   const { toast } = useToast();
@@ -226,6 +228,7 @@ export default function Dashboard() {
     <>
       <LoadingScreen isVisible={isLoading} />
       <TutorialOverlay isVisible={showTutorial} onClose={closeTutorial} />
+      <FirstRunSetup onComplete={() => setFirstRunComplete(true)} />
       
       <div className="app-window bg-white h-screen flex flex-col">
         <WindowTitleBar />
