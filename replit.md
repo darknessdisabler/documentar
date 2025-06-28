@@ -99,14 +99,19 @@ The application uses a modular content system where each module represents a dif
 - **Migration System**: Drizzle-kit for schema versioning
 
 ## Recent Changes
-- June 28, 2025: Added offline AI generation system replacing OpenAI API dependency
-- June 28, 2025: Implemented full module editing system with modal dialogs
-- June 28, 2025: Added "Add New Module" functionality with type selection
-- June 28, 2025: Enhanced tutorial overlay with close button
-- June 28, 2025: Improved drag-and-drop interface with epic falling animations
-- June 28, 2025: Created comprehensive ModuleEditModal with text editing for all module types
-- June 28, 2025: Added AI model management system with automatic first-run setup
-- June 28, 2025: Implemented FirstRunSetup component for automatic base model downloading
+- June 28, 2025: Added comprehensive Electron desktop application support with main.js and preload.js
+- June 28, 2025: Implemented fully interactive theme editor with color presets, live preview, and export/import
+- June 28, 2025: Created animated gradient background system with 7 preset options and customization
+- June 28, 2025: Built comprehensive AI model manager with language/image/multimodal categories
+- June 28, 2025: Added LoRA model support with dependency tracking and requirements
+- June 28, 2025: Implemented complete export system for PPTX, DOCX, and XLSX formats
+- June 28, 2025: Created AI image generation service with Sharp processing and style options
+- June 28, 2025: Built interactive image generator with enhancement tools and gallery
+- June 28, 2025: Added model downloading progress tracking and status management
+- June 28, 2025: Enhanced settings modal with 4 comprehensive tabs
+- June 28, 2025: Integrated export manager with download progress and file management
+- June 28, 2025: Added image editing features (resize, enhance, color adjustment)
+- June 28, 2025: Implemented complete desktop app architecture with menu system
 
 ## User Preferences
 

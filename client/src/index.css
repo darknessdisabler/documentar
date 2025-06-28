@@ -59,9 +59,17 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased text-foreground;
     font-family: var(--theme-font, 'Inter'), sans-serif;
     overflow: hidden;
+    background: var(--animated-background, linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab));
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+  }
+
+  body.static-background {
+    background: var(--background);
+    animation: none;
   }
 }
 
@@ -227,12 +235,58 @@
   --tw-ring-color: var(--theme-primary);
 }
 
+/* Animated Gradient Background */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Gradient Presets */
+.gradient-rainbow {
+  --animated-background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+}
+
+.gradient-sunset {
+  --animated-background: linear-gradient(-45deg, #ff9a9e, #fecfef, #fecfef, #ffecd2);
+}
+
+.gradient-ocean {
+  --animated-background: linear-gradient(-45deg, #667eea, #764ba2, #23a6d5, #23d5ab);
+}
+
+.gradient-forest {
+  --animated-background: linear-gradient(-45deg, #56ab2f, #a8e6cf, #88d8a3, #56ab2f);
+}
+
+.gradient-fire {
+  --animated-background: linear-gradient(-45deg, #fa709a, #fee140, #ff7b7b, #fa709a);
+}
+
+.gradient-space {
+  --animated-background: linear-gradient(-45deg, #4568dc, #b06ab3, #833ab4, #4568dc);
+}
+
+.gradient-custom {
+  --animated-background: linear-gradient(-45deg, var(--theme-primary), var(--theme-secondary), var(--theme-accent), var(--theme-primary));
+}
+
 /* Animation performance optimizations */
 .module-card, .theme-preview {
   will-change: transform;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none !important;
+  }
+  
   .loading-module {
     animation: none;
   }

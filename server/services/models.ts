@@ -5,12 +5,16 @@ export interface AIModel {
   id: string;
   name: string;
   type: 'base' | 'lora';
+  category: 'language' | 'image' | 'multimodal';
   size: string;
   downloaded: boolean;
   downloading: boolean;
   progress: number;
   url?: string;
   path?: string;
+  description?: string;
+  requirements?: string[];
+  capabilities?: string[];
 }
 
 export interface ModelDownloadProgress {
@@ -32,45 +36,129 @@ class ModelManager {
 
   private initializeDefaultModels() {
     const defaultModels: AIModel[] = [
+      // Language Models
       {
         id: 'llama3-8b',
         name: 'Llama 3 8B',
         type: 'base',
+        category: 'language',
         size: '4.7GB',
         downloaded: false,
         downloading: false,
         progress: 0,
-        url: 'https://huggingface.co/microsoft/Phi-3-mini-4k-instruct/resolve/main/model.safetensors'
+        url: 'https://huggingface.co/microsoft/Phi-3-mini-4k-instruct/resolve/main/model.safetensors',
+        description: 'Потужна мовна модель для генерації тексту та презентацій',
+        capabilities: ['text-generation', 'presentation', 'document', 'ukrainian', 'english']
       },
       {
         id: 'phi3-mini',
         name: 'Phi-3 Mini',
         type: 'base',
+        category: 'language',
         size: '2.4GB',
         downloaded: false,
         downloading: false,
         progress: 0,
-        url: 'https://huggingface.co/microsoft/Phi-3-mini-4k-instruct'
+        url: 'https://huggingface.co/microsoft/Phi-3-mini-4k-instruct',
+        description: 'Компактна і швидка модель від Microsoft',
+        capabilities: ['code-generation', 'instruction-following', 'reasoning']
       },
       {
         id: 'gemma-2b',
         name: 'Gemma 2B',
         type: 'base',
+        category: 'language',
         size: '1.4GB',
         downloaded: false,
         downloading: false,
         progress: 0,
-        url: 'https://huggingface.co/google/gemma-2b'
+        url: 'https://huggingface.co/google/gemma-2b',
+        description: 'Легка модель від Google для швидкої роботи',
+        capabilities: ['text-generation', 'creative-writing', 'summarization']
       },
+      // Image Generation Models
+      {
+        id: 'stable-diffusion-xl',
+        name: 'Stable Diffusion XL',
+        type: 'base',
+        category: 'image',
+        size: '6.9GB',
+        downloaded: false,
+        downloading: false,
+        progress: 0,
+        url: 'https://huggingface.co/stabilityai/stable-diffusion-xl-base-1.0',
+        description: 'Найкраща модель для генерації високоякісних зображень',
+        capabilities: ['image-generation', 'artistic-style', 'photorealistic', 'illustrations']
+      },
+      {
+        id: 'dall-e-mini',
+        name: 'DALL-E Mini',
+        type: 'base',
+        category: 'image',
+        size: '2.1GB',
+        downloaded: false,
+        downloading: false,
+        progress: 0,
+        url: 'https://huggingface.co/dalle-mini/dalle-mini',
+        description: 'Компактна модель для швидкої генерації зображень',
+        capabilities: ['image-generation', 'simple-illustrations', 'icons']
+      },
+      // Multimodal Models
+      {
+        id: 'llava-13b',
+        name: 'LLaVA 13B',
+        type: 'base',
+        category: 'multimodal',
+        size: '7.8GB',
+        downloaded: false,
+        downloading: false,
+        progress: 0,
+        url: 'https://huggingface.co/liuhaotian/llava-v1.5-13b',
+        description: 'Мультимодальна модель для роботи з текстом та зображеннями',
+        capabilities: ['vision-language', 'image-analysis', 'visual-qa', 'content-description']
+      },
+      // LoRA Models
       {
         id: 'ukrainian-lora',
         name: 'Ukrainian Language LoRA',
         type: 'lora',
+        category: 'language',
         size: '150MB',
         downloaded: false,
         downloading: false,
         progress: 0,
-        url: 'https://huggingface.co/ukrainian-community/ukrainian-lora'
+        url: 'https://huggingface.co/ukrainian-community/ukrainian-lora',
+        description: 'Адаптер для покращення роботи з українською мовою',
+        requirements: ['llama3-8b'],
+        capabilities: ['ukrainian-enhancement', 'local-context']
+      },
+      {
+        id: 'presentation-lora',
+        name: 'Presentation Style LoRA',
+        type: 'lora',
+        category: 'language',
+        size: '200MB',
+        downloaded: false,
+        downloading: false,
+        progress: 0,
+        url: 'https://example.com/presentation-lora.bin',
+        description: 'Спеціалізований адаптер для створення презентацій',
+        requirements: ['llama3-8b'],
+        capabilities: ['presentation-structure', 'business-style']
+      },
+      {
+        id: 'artistic-lora',
+        name: 'Artistic Style LoRA',
+        type: 'lora',
+        category: 'image',
+        size: '80MB',
+        downloaded: false,
+        downloading: false,
+        progress: 0,
+        url: 'https://example.com/artistic-lora.bin',
+        description: 'Художній стиль для генерації зображень',
+        requirements: ['stable-diffusion-xl'],
+        capabilities: ['artistic-enhancement', 'style-transfer']
       }
     ];
 
