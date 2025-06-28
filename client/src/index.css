@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(0, 0%, 100%);
+  --foreground: hsl(20, 14.3%, 4.1%);
+  --muted: hsl(60, 4.8%, 95.9%);
+  --muted-foreground: hsl(25, 5.3%, 44.7%);
+  --popover: hsl(0, 0%, 100%);
+  --popover-foreground: hsl(20, 14.3%, 4.1%);
+  --card: hsl(0, 0%, 100%);
+  --card-foreground: hsl(20, 14.3%, 4.1%);
+  --border: hsl(20, 5.9%, 90%);
+  --input: hsl(20, 5.9%, 90%);
+  --primary: hsl(210, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(270, 80%, 55%);
+  --secondary-foreground: hsl(270, 100%, 99%);
+  --accent: hsl(38, 92%, 50%);
+  --accent-foreground: hsl(60, 9.1%, 97.8%);
+  --destructive: hsl(0, 84.2%, 60.2%);
+  --destructive-foreground: hsl(60, 9.1%, 97.8%);
+  --ring: hsl(20, 14.3%, 4.1%);
+  --radius: 0.75rem;
+
+  /* Custom theme variables */
+  --theme-primary: hsl(210, 90%, 54%);
+  --theme-secondary: hsl(270, 80%, 55%);
+  --theme-accent: hsl(38, 92%, 50%);
+  --theme-font: 'Inter';
+}
+
+.dark {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(210, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    font-family: var(--theme-font, 'Inter'), sans-serif;
+    overflow: hidden;
+  }
+}
+
+/* App Window Styling */
+.app-window {
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+}
+
+/* Module Card Styling */
+.module-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: grab;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.module-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.module-card.dragging {
+  cursor: grabbing;
+  transform: rotate(5deg) scale(1.05);
+  z-index: 1000;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* Loading Animation */
+.loading-module {
+  animation: moduleLoad 2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes moduleLoad {
+  0% {
+    transform: translateY(-100vh) rotate(180deg);
+    opacity: 0;
+  }
+  70% {
+    transform: translateY(10px) rotate(-5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Tutorial Highlight */
+.tutorial-highlight {
+  animation: tutorialPulse 2s infinite;
+}
+
+@keyframes tutorialPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 var(--theme-primary);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(37, 99, 235, 0.2);
+  }
+}
+
+/* Theme Preview */
+.theme-preview {
+  transition: all 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Gradient Backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Glass Effect */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(60, 4.8%, 95.9%);
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(25, 5.3%, 44.7%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(25, 5.3%, 34.7%);
+}
+
+/* Custom Primary Colors */
+.bg-primary-500 {
+  background-color: var(--theme-primary);
+}
+
+.text-primary-500, .text-primary-600, .text-primary-700 {
+  color: var(--theme-primary);
+}
+
+.border-primary-500, .border-primary-200, .border-primary-300 {
+  border-color: var(--theme-primary);
+}
+
+.bg-primary-50 {
+  background-color: color-mix(in srgb, var(--theme-primary) 10%, white);
+}
+
+.bg-primary-100 {
+  background-color: color-mix(in srgb, var(--theme-primary) 20%, white);
+}
+
+/* Custom Secondary Colors */
+.bg-secondary-500 {
+  background-color: var(--theme-secondary);
+}
+
+.text-secondary-600 {
+  color: var(--theme-secondary);
+}
+
+.bg-secondary-100 {
+  background-color: color-mix(in srgb, var(--theme-secondary) 20%, white);
+}
+
+/* Custom Accent Colors */
+.bg-accent-500 {
+  background-color: var(--theme-accent);
+}
+
+.text-accent-600 {
+  color: var(--theme-accent);
+}
+
+.bg-accent-100 {
+  background-color: color-mix(in srgb, var(--theme-accent) 20%, white);
+}
+
+/* Hover states */
+.hover\:bg-primary-600:hover {
+  background-color: color-mix(in srgb, var(--theme-primary) 90%, black);
+}
+
+.hover\:bg-secondary-600:hover {
+  background-color: color-mix(in srgb, var(--theme-secondary) 90%, black);
+}
+
+.hover\:bg-accent-600:hover {
+  background-color: color-mix(in srgb, var(--theme-accent) 90%, black);
+}
+
+/* Focus states */
+.focus\:ring-primary-500:focus {
+  --tw-ring-color: var(--theme-primary);
+}
+
+/* Animation performance optimizations */
+.module-card, .theme-preview {
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-module {
+    animation: none;
+  }
+  
+  .tutorial-highlight {
+    animation: none;
+    box-shadow: 0 0 0 4px var(--theme-primary);
+  }
+}
