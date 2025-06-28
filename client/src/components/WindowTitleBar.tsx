@@ -1,10 +1,14 @@
+import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Languages, FileText } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Languages, FileText, Settings } from 'lucide-react';
 import { useTheme } from '@/hooks/useTheme';
 import { t } from '@/lib/translations';
+import SettingsModal from './SettingsModal';
 
 export default function WindowTitleBar() {
   const { language, updateLanguage } = useTheme();
+  const [showSettings, setShowSettings] = useState(false);
 
   return (
     <div className="bg-gray-100 px-4 py-2 flex items-center justify-between border-b">
@@ -42,7 +46,22 @@ export default function WindowTitleBar() {
             </SelectContent>
           </Select>
         </div>
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={() => setShowSettings(true)}
+          className="flex items-center space-x-1"
+        >
+          <Settings className="w-4 h-4" />
+          <span className="text-sm">{t('settings', language)}</span>
+        </Button>
       </div>
+
+      <SettingsModal 
+        isOpen={showSettings} 
+        onClose={() => setShowSettings(false)} 
+      />
     </div>
   );
 }

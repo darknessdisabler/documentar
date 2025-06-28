@@ -5,9 +5,11 @@ export function useDragDrop(modules: Module[], onModulesChange: (modules: Module
   const [draggedModule, setDraggedModule] = useState<Module | null>(null);
   const [isDragging, setIsDragging] = useState(false);
 
-  const handleDragStart = useCallback((module: Module) => {
+  const handleDragStart = useCallback((e: React.DragEvent, module: Module) => {
     setDraggedModule(module);
     setIsDragging(true);
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', module.id);
   }, []);
 
   const handleDragEnd = useCallback(() => {
@@ -15,15 +17,24 @@ export function useDragDrop(modules: Module[], onModulesChange: (modules: Module
     setIsDragging(false);
   }, []);
 
-  const handleDrop = useCallback((targetIndex: number) => {
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault();
     if (!draggedModule) return;
 
     const currentIndex = modules.findIndex(m => m.id === draggedModule.id);
-    if (currentIndex === -1) return;
+    if (currentIndex === -1 || currentIndex === targetIndex) {
+      handleDragEnd();
+      return;
+    }
 
     const newModules = [...modules];
-    newModules.splice(currentIndex, 1);
-    newModules.splice(targetIndex, 0, draggedModule);
+    const [movedModule] = newModules.splice(currentIndex, 1);
+    newModules.splice(targetIndex, 0, movedModule);
 
     onModulesChange(newModules);
     handleDragEnd();
@@ -102,6 +113,7 @@ export function useDragDrop(modules: Module[], onModulesChange: (modules: Module
     isDragging,
     handleDragStart,
     handleDragEnd,
+    handleDragOver,
     handleDrop,
     moveModule,
     updateModule,

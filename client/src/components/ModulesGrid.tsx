@@ -25,6 +25,8 @@ export default function ModulesGrid({ modules, onModulesChange, showTutorial }: 
     isDragging,
     handleDragStart,
     handleDragEnd,
+    handleDragOver,
+    handleDrop,
     updateModule,
     deleteModule,
     duplicateModule,
@@ -46,24 +48,30 @@ export default function ModulesGrid({ modules, onModulesChange, showTutorial }: 
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 max-h-screen overflow-y-auto p-2">
       <motion.div 
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto"
         layout
       >
         <AnimatePresence>
           {modules.map((module, index) => (
-            <ModuleCard
+            <div
               key={module.id}
-              module={module}
-              index={index}
-              onEdit={handleEdit}
-              onDelete={deleteModule}
-              onDuplicate={duplicateModule}
-              onDragStart={handleDragStart}
-              isDragging={draggedModule?.id === module.id}
-              showTutorial={showTutorial && index === 0}
-            />
+              onDragOver={handleDragOver}
+              onDrop={(e) => handleDrop(e, index)}
+              className="relative"
+            >
+              <ModuleCard
+                module={module}
+                index={index}
+                onEdit={handleEdit}
+                onDelete={deleteModule}
+                onDuplicate={duplicateModule}
+                onDragStart={handleDragStart}
+                isDragging={draggedModule?.id === module.id}
+                showTutorial={showTutorial && index === 0}
+              />
+            </div>
           ))}
         </AnimatePresence>
       </motion.div>

@@ -64,6 +64,9 @@ export const translations = {
     dropModuleHere: "Перетягніть модуль сюди",
     addNewModule: "Додати новий модуль",
     selectModuleType: "Оберіть тип модуля",
+    settings: "Налаштування",
+    theme: "Тема",
+    folders: "Папки",
     
     // Default content
     presentationTitle: "Презентація DocumentA®",
@@ -140,6 +143,9 @@ export const translations = {
     dropModuleHere: "Drop module here",
     addNewModule: "Add New Module",
     selectModuleType: "Select module type",
+    settings: "Settings",
+    theme: "Theme",
+    folders: "Folders",
     
     // Default content
     presentationTitle: "DocumentA® Presentation",

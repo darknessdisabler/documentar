@@ -23,7 +23,7 @@ interface ModuleCardProps {
   onEdit: (module: Module) => void;
   onDelete: (moduleId: string) => void;
   onDuplicate: (moduleId: string) => void;
-  onDragStart: (module: Module) => void;
+  onDragStart: (e: React.DragEvent, module: Module) => void;
   isDragging: boolean;
   showTutorial?: boolean;
 }
@@ -59,9 +59,14 @@ export default function ModuleCard({
   const { language } = useTheme();
   const Icon = moduleIcons[module.type];
 
+  const handleDragStart = (e: React.DragEvent) => {
+    e.stopPropagation();
+    onDragStart(e, module);
+  };
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (e.target instanceof Element && e.target.closest('button')) return;
-    onDragStart(module);
+    // Mouse down handling for other interactions
   };
 
   const renderContent = () => {
@@ -182,6 +187,8 @@ export default function ModuleCard({
         ${isDragging ? 'cursor-grabbing shadow-2xl' : ''}
         ${showTutorial ? 'ring-4 ring-primary-300 ring-opacity-50 animate-pulse' : ''}
       `}
+      draggable
+      onDragStart={handleDragStart}
       onMouseDown={handleMouseDown}
       style={{ transform: isDragging ? 'rotate(5deg)' : 'rotate(0deg)' }}
     >
